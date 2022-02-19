@@ -1,3 +1,5 @@
+import 'package:easygizi/app/data/models/user_model.dart';
+import 'package:easygizi/app/modules/chat/views/chat_view.dart';
 import 'package:easygizi/app/modules/chat_room/views/chat_room_view.dart';
 import 'package:easygizi/app/modules/home/views/home_view.dart';
 import 'package:easygizi/app/modules/profile_user/views/profile_user_view.dart';
@@ -19,7 +21,7 @@ class BottomNavigationView extends StatelessWidget {
             children: [
               HomeView(),
               AppointmentView(),
-              ChatRoomView(),
+              ChatView(),
               ProfileUserView(),
             ],
           ),
@@ -62,5 +64,4 @@ class BottomNavigationView extends StatelessWidget {
       },
     );
   }
-
 }

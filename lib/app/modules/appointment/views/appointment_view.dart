@@ -11,7 +11,6 @@ class AppointmentView extends GetView<AppointmentController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: SafeArea(
         child: SingleChildScrollView(
           child: Stack(
@@ -26,7 +25,7 @@ class AppointmentView extends GetView<AppointmentController> {
               ),
               Column(
                 children: [
-                  SizedBox(height: 31), 
+                  SizedBox(height: 31),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -69,7 +68,7 @@ class AppointmentView extends GetView<AppointmentController> {
                   ),
                   Container(
                     width: double.infinity,
-                    height : 220,
+                    height: 220,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(
@@ -82,10 +81,8 @@ class AppointmentView extends GetView<AppointmentController> {
                       top: 30,
                       bottom: 15,
                     ),
-                     padding: EdgeInsets.only(
-                      
+                    padding: EdgeInsets.only(
                       top: 15,
-                  
                     ),
                     child: Column(
                       children: [
@@ -150,6 +147,7 @@ class AppointmentView extends GetView<AppointmentController> {
                               GestureDetector(
                                 onTap: () {
                                   controller.chooseTime();
+                                  
                                 },
                                 child: Row(
                                   children: [
@@ -197,7 +195,9 @@ class AppointmentView extends GetView<AppointmentController> {
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  controller.changeTime();
+                                },
                                 child: Text(
                                   'Cancel',
                                   style: reguler.copyWith(
@@ -217,7 +217,11 @@ class AppointmentView extends GetView<AppointmentController> {
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  
+                                  controller.changeTime();
+                                  
+                                },
                                 child: Text(
                                   'Reschedule',
                                   style: reguler.copyWith(
@@ -237,7 +241,6 @@ class AppointmentView extends GetView<AppointmentController> {
           ),
         ),
       ),
-  
     );
   }
 }

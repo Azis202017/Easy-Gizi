@@ -79,7 +79,7 @@ class ProfileUserView extends GetView<ProfileUserController> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(18),
                       child: Image.network(
-                        '${authController.user.photoUrl}',
+                        '${authController.user.value.photoUrl}',
                       ),
                     ),
                   ),
@@ -88,7 +88,7 @@ class ProfileUserView extends GetView<ProfileUserController> {
                   height: 25,
                 ),
                 Text(
-                  '${authController.user.name}',
+                  '${authController.user.value.name}',
                   style: interSemiBold.copyWith(
                     color: blackColor2,
                     fontSize: 18,
@@ -98,7 +98,7 @@ class ProfileUserView extends GetView<ProfileUserController> {
                   height: 15,
                 ),
                 Text(
-                  '${authController.user.email}',
+                  '${authController.user.value.email}',
                   style: interSemiBold.copyWith(
                     color: greyColor2,
                     fontSize: 18,
@@ -117,7 +117,7 @@ class ProfileUserView extends GetView<ProfileUserController> {
                       Row(
                         children: [
                           Text(
-                            '${authController.user.gender}',
+                            '${authController.user.value.gender}',
                             style: reguler.copyWith(
                               color: greyColor4,
                             ),
@@ -158,7 +158,7 @@ class ProfileUserView extends GetView<ProfileUserController> {
                       Row(
                         children: [
                           Text(
-                            '${authController.user.age}',
+                            '${authController.user.value.age}',
                             style: reguler.copyWith(
                               color: greyColor4,
                             ),

@@ -28,6 +28,7 @@ class UserModel {
         this.creationTime,
         this.updatedTime,
         this.chats,
+        this.keyName,
     });
 
     String? uid;
@@ -36,6 +37,7 @@ class UserModel {
     String? about;
     int? age;
     String? gender;
+    String? keyName;
     int? height;
     String? role;
     String? status;
@@ -47,7 +49,7 @@ class UserModel {
     String? lastSignInTime;
     String? creationTime;
     String? updatedTime;
-    List<Chat>? chats;
+    List<ChatUsers>? chats;
 
     factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         uid: json["uid"],
@@ -64,10 +66,11 @@ class UserModel {
         patients: json["patients"],
         experience: json["experience"],
         weight: json["weight"],
+        keyName : json['keyName'],
         lastSignInTime: json["lastSignInTime"],
         creationTime: json["creationTime"],
         updatedTime: json["updatedTime"],
-        chats: List<Chat>.from(json["chats"].map((x) => Chat.fromJson(x))),
+        chats: List<ChatUsers>.from(json["chats"].map((x) => ChatUsers.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
@@ -88,12 +91,13 @@ class UserModel {
         "lastSignInTime": lastSignInTime,
         "creationTime": creationTime,
         "updatedTime": updatedTime,
+        'keyName' : keyName,
         "chats": List<dynamic>.from(chats!.map((x) => x.toJson())),
     };
 }
 
-class Chat {
-    Chat({
+class ChatUsers {
+    ChatUsers({
         this.connection,
         this.chatId,
         this.lastTime,
@@ -102,20 +106,20 @@ class Chat {
 
     String? connection;
     String? chatId;
-    DateTime? lastTime;
+    String? lastTime;
     int? totalUnread;
 
-    factory Chat.fromJson(Map<String, dynamic> json) => Chat(
+    factory ChatUsers.fromJson(Map<String, dynamic> json) => ChatUsers(
         connection: json["connection"],
         chatId: json["chat_id"],
-        lastTime: DateTime.parse(json["lastTime"]),
+        lastTime: json["lastTime"],
         totalUnread: json["total_unread"],
     );
 
     Map<String, dynamic> toJson() => {
         "connection": connection,
         "chat_id": chatId,
-        "lastTime": lastTime!.toIso8601String(),
+        "lastTime": lastTime,
         "total_unread": totalUnread,
     };
 }

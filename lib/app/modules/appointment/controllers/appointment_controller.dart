@@ -4,16 +4,17 @@ import 'package:get/get.dart';
 class AppointmentController extends GetxController {
   var selectedDate = DateTime.now().obs;
   var selectedTime = TimeOfDay.now().obs;
+  DateTime? pickedDate;
   var stringMessage = "".obs;
   chooseDate() async {
-    DateTime? pickedDate = await showDatePicker(
+    pickedDate = await showDatePicker(
       context: Get.context!,
       initialDate: selectedDate.value,
       firstDate: DateTime(2000),
       lastDate: DateTime(2024),
     );
     if (pickedDate != null && pickedDate != selectedDate.value) {
-      selectedDate.value = pickedDate;
+      selectedDate.value = pickedDate!;
     }
   }
 
@@ -43,5 +44,15 @@ class AppointmentController extends GetxController {
         selectedTime.value = pickedTime;
       }
     }
+  }
+
+  changeTime() {
+    pickedDate =  DateTime(
+      selectedDate.value.year,
+      selectedDate.value.month,
+      selectedDate.value.hour,
+      selectedTime.value.hour,
+      selectedTime.value.minute,
+    );
   }
 }

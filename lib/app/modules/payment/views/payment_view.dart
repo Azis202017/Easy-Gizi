@@ -32,7 +32,7 @@ class PaymentView extends GetView<PaymentController> {
                 child: ListTile(
                   contentPadding: EdgeInsets.zero,
                   leading: GestureDetector(
-                    onTap : () {
+                    onTap: () {
                       Get.back();
                     },
                     child: Image.asset(
@@ -49,7 +49,9 @@ class PaymentView extends GetView<PaymentController> {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  trailing : SizedBox(width : 50,),
+                  trailing: SizedBox(
+                    width: 50,
+                  ),
                 ),
               ),
               Column(
@@ -317,6 +319,26 @@ class PaymentView extends GetView<PaymentController> {
                             () => Radio(
                               activeColor: primaryColor,
                               value: controller.listOfPayment[3],
+                              groupValue: controller.payment.value,
+                              onChanged: (value) {
+                                controller.changeValue(value.toString());
+                              },
+                            ),
+                          ),
+                        ),
+                        Divider(),
+                        ListTile(
+                          contentPadding: EdgeInsets.zero,
+                          leading: Image.asset(
+                            'assets/images/dana.png',
+                            width: 24,
+                            height: 24,
+                          ),
+                          title: Text('Dana'),
+                          trailing: Obx(
+                            () => Radio(
+                              activeColor: primaryColor,
+                              value: controller.listOfPayment[4],
                               groupValue: controller.payment.value,
                               onChanged: (value) {
                                 controller.changeValue(value.toString());

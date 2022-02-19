@@ -11,10 +11,16 @@ import '../modules/chat/bindings/chat_binding.dart';
 import '../modules/chat/views/chat_view.dart';
 import '../modules/chat_room/bindings/chat_room_binding.dart';
 import '../modules/chat_room/views/chat_room_view.dart';
+import '../modules/chat_search/bindings/chat_search_binding.dart';
+import '../modules/chat_search/views/chat_search_view.dart';
+import '../modules/event/bindings/event_binding.dart';
+import '../modules/event/views/event_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login_page/bindings/login_page_binding.dart';
 import '../modules/login_page/views/login_page_view.dart';
+import '../modules/nutrition/bindings/nutrition_binding.dart';
+import '../modules/nutrition/views/nutrition_view.dart';
 import '../modules/payment/bindings/payment_binding.dart';
 import '../modules/payment/views/payment_view.dart';
 import '../modules/payment_success/bindings/payment_success_binding.dart';
@@ -92,6 +98,21 @@ class AppPages {
     GetPage(
       name: _Paths.BMI_CALCULATOR,
       page: () => BmiCalculator(),
+    ),
+    GetPage(
+      name: _Paths.EVENT,
+      page: () => EventView(),
+      binding: EventBinding(),
+    ),
+    GetPage(
+      name: _Paths.NUTRITION,
+      page: () => NutritionView(),
+      binding: NutritionBinding(),
+    ),
+    GetPage(
+      name: _Paths.CHAT_SEARCH,
+      page: () => ChatSearchView(),
+      binding: ChatSearchBinding(),
     ),
   ];
 }

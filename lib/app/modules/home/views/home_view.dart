@@ -26,7 +26,6 @@ class HomeView extends GetView<HomeController> {
                   fit: BoxFit.cover,
                 ),
               ),
-       
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -34,29 +33,31 @@ class HomeView extends GetView<HomeController> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Hi, ${authController.user.name} 👋',
-                              style: interSemiBold.copyWith(
-                                fontSize: 24,
-                                color: whiteColor,
-                                letterSpacing: 0.03,
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 30.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Hi, ${authController.user.value.name} 👋',
+                                style: interSemiBold.copyWith(
+                                  fontSize: 24,
+                                  color: whiteColor,
+                                  letterSpacing: 0.03,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 15),
-                            Text(
-                              'How are you feeling today?',
-                              style: reguler.copyWith(
-                                fontSize: 14,
-                                color: whiteColorOpacity,
-                                letterSpacing: 0.03,
-                              ),
-                            )
-                          ],
+                              const SizedBox(height: 15),
+                              Text(
+                                'How are you feeling today?',
+                                style: reguler.copyWith(
+                                  fontSize: 14,
+                                  color: whiteColorOpacity,
+                                  letterSpacing: 0.03,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                       Padding(
@@ -71,7 +72,7 @@ class HomeView extends GetView<HomeController> {
                       ),
                     ],
                   ),
-                 
+                
                   Container(
                     width: Get.width,
                     margin: EdgeInsets.only(
@@ -108,6 +109,7 @@ class HomeView extends GetView<HomeController> {
                       ),
                     ),
                   ),
+                
                   Container(
                     margin: EdgeInsets.only(
                       left: 30,
@@ -165,9 +167,7 @@ class HomeView extends GetView<HomeController> {
                     child: Row(
                       children: [
                         GestureDetector(
-                          onTap : () {
-                            Get.toNamed(Routes.BMI_CALCULATOR);
-                          },
+                          onTap: () {},
                           child: Column(
                             children: [
                               Container(
@@ -199,94 +199,109 @@ class HomeView extends GetView<HomeController> {
                           ),
                         ),
                         SizedBox(width: 15),
-                        Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(
-                                left: 20,
-                                right: 19,
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed(Routes.EVENT);
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(
+                                  left: 20,
+                                  right: 19,
+                                ),
+                                width: 75,
+                                height: 75,
+                                child: Image.asset(
+                                  'assets/images/event.png',
+                                  width: 36,
+                                  height: 36,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: greyColor3,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
                               ),
-                              width: 75,
-                              height: 75,
-                              child: Image.asset(
-                                'assets/images/event.png',
-                                width: 36,
-                                height: 36,
-                              ),
-                              decoration: BoxDecoration(
-                                color: greyColor3,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                            SizedBox(height: 15),
-                            Text(
-                              'Event',
-                              style: reguler.copyWith(
-                                fontSize: 12,
-                                color: blackColor2,
-                              ),
-                            )
-                          ],
+                              SizedBox(height: 15),
+                              Text(
+                                'Event',
+                                style: reguler.copyWith(
+                                  fontSize: 12,
+                                  color: blackColor2,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                         SizedBox(width: 15),
-                        Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(
-                                left: 20,
-                                right: 19,
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed(Routes.NUTRITION);
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(
+                                  left: 20,
+                                  right: 19,
+                                ),
+                                width: 75,
+                                height: 75,
+                                child: Image.asset(
+                                  'assets/images/nutrition.png',
+                                  width: 36,
+                                  height: 36,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: greyColor3,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
                               ),
-                              width: 75,
-                              height: 75,
-                              child: Image.asset(
-                                'assets/images/nutrition.png',
-                                width: 36,
-                                height: 36,
-                              ),
-                              decoration: BoxDecoration(
-                                color: greyColor3,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                            SizedBox(height: 15),
-                            Text(
-                              'Nutrition',
-                              style: reguler.copyWith(
-                                fontSize: 12,
-                                color: blackColor2,
-                              ),
-                            )
-                          ],
+                              SizedBox(height: 15),
+                              Text(
+                                'Nutrition',
+                                style: reguler.copyWith(
+                                  fontSize: 12,
+                                  color: blackColor2,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                         SizedBox(width: 15),
-                        Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(
-                                left: 20,
-                                right: 19,
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed(Routes.BMI_CALCULATOR);
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(
+                                  left: 20,
+                                  right: 19,
+                                ),
+                                width: 75,
+                                height: 75,
+                                child: Image.asset(
+                                  'assets/images/bmi_calculator.png',
+                                  width: 36,
+                                  height: 36,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: greyColor3,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
                               ),
-                              width: 75,
-                              height: 75,
-                              child: Image.asset(
-                                'assets/images/bmi_calculator.png',
-                                width: 36,
-                                height: 36,
-                              ),
-                              decoration: BoxDecoration(
-                                color: greyColor3,
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                            SizedBox(height: 15),
-                            Text(
-                              'BMI Calculator',
-                              style: reguler.copyWith(
-                                fontSize: 12,
-                                color: blackColor2,
-                              ),
-                            )
-                          ],
+                              SizedBox(height: 15),
+                              Text(
+                                'BMI Calculator',
+                                style: reguler.copyWith(
+                                  fontSize: 12,
+                                  color: blackColor2,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -316,12 +331,13 @@ class HomeView extends GetView<HomeController> {
                       ],
                     ),
                   ),
+                
                   Container(
                     margin: EdgeInsets.only(
                       top: 25,
                       left: 30,
                       right: 30,
-                      bottom : 30,
+                      bottom: 30,
                     ),
                     padding: const EdgeInsets.only(
                       bottom: 14,
@@ -348,7 +364,6 @@ class HomeView extends GetView<HomeController> {
                     child: ListTile(
                       leading: Image.asset(
                         'assets/images/doctor_photo.png',
-                       
                       ),
                       title: Text(
                         'Dr. Anastasya Salma',

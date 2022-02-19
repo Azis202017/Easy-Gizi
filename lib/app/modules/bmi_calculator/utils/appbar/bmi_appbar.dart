@@ -26,7 +26,7 @@ class BmiAppBar extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                 isInputPage ? Get.toNamed(Routes.HOME) : Get.toNamed(Routes.BMI_CALCULATOR);
+                 isInputPage ? Get.toNamed(Routes.BOTTOM_NAVIGATION) : Get.toNamed(Routes.BMI_CALCULATOR);
                 },
                 child: Image.asset(
                   'assets/images/back_button.png',
