@@ -1,0 +1,33 @@
+{
+    "uid" : "",
+    "email" : "",
+    "name" : "",
+    "about" : "",
+    "age" : 0,
+    "gender" : "",
+    "height" : 0,
+    "role" : "",
+    "status" : "",
+    "photoUrl" : "",
+    "rating" : 0,
+    "patients" : 0,
+    "experience" : 0,
+    "weight" : 0,
+    "lastSignInTime" : "",
+    "creationTime" : "",
+    "updatedTime" : "",
+    "chats": [
+        {
+            "connection": "dr_renata@gmail.com",
+            "chat_id": "RO337DaJnITOcfDgo2ENh8IPanVs",
+            "lastTime": "2021-08-25T13:29:02.748721",
+            "total_unread": 0
+        },
+        {
+            "connection": "dr_hello@gmail.com",
+            "chat_id": "JnITOcfDgo2ENh8IPanVsRO337Da",
+            "lastTime": "2021-09-25T13:28:59.748721",
+            "total_unread": 0
+        }
+    ]
+}

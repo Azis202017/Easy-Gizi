@@ -1,0 +1,14 @@
+import 'package:flutter/material.dart';
+Color whiteColor = Color(0xffFFFFFF);
+Color whiteColorOpacity = Color.fromRGBO(255, 255, 255, 0.75);
+Color primaryColor = Color(0xff5669FF);
+Color greyColor = Color(0xff949494);
+Color blackColor = Color(0xff000000);
+Color greyColorOpacity = Color.fromRGBO(148, 148, 148, 0.05); 
+Color greyColorOpacity2 = Color.fromRGBO(148, 148, 148, 0.1); 
+Color blackColor2 = Color(0xff111111);
+Color blackColorOpacity = Color.fromRGBO(17, 17, 17, 0.2);
+Color whiteColor2 = Color(0xffFCFCFC);
+Color greyColor2 = Color(0xffc4c4c4);
+Color greyColor3 = Color(0xfff6f8fa);
+Color greyColor4 = Color(0xffA8A8A8);

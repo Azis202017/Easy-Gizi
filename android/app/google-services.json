@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "408736696042",
+    "project_id": "easy-gizi",
+    "storage_bucket": "easy-gizi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408736696042:android:4cf141c48512383a17b993",
+        "android_client_info": {
+          "package_name": "com.abdulazisalayubbi.easygizi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408736696042-37b0v92tf3cf16vnor7jiopquljksaeo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abdulazisalayubbi.easygizi",
+            "certificate_hash": "1f67f39a21053ef2f54c8c13050829ad5c40b944"
+          }
+        },
+        {
+          "client_id": "408736696042-o8982a8o4qf73o08sujarr85lh58djbe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7fQUoSRYEoZ0ymF6Exuc0neb7wEuW8-w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "408736696042-o8982a8o4qf73o08sujarr85lh58djbe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
