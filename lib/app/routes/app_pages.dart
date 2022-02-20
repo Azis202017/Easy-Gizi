@@ -5,8 +5,7 @@ import '../modules/appointment/views/appointment_view.dart';
 import '../modules/bmi_calculator/views/bmi_calculator_view.dart';
 import '../modules/bottom_navigation/bindings/bottom_navigation_binding.dart';
 import '../modules/bottom_navigation/views/bottom_navigation_view.dart';
-import '../modules/change_profile/bindings/change_profile_binding.dart';
-import '../modules/change_profile/views/change_profile_view.dart';
+
 import '../modules/chat/bindings/chat_binding.dart';
 import '../modules/chat/views/chat_view.dart';
 import '../modules/chat_room/bindings/chat_room_binding.dart';
