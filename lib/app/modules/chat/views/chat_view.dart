@@ -143,7 +143,7 @@ class ChatView extends GetView<ChatController> {
                                             ListTile(
                                               onTap: () {
                                                 controller.goToChatRoom(
-                                                  listDocsChats[index].id,
+                                                  "${listDocsChats[index].id}",
                                                   authController
                                                       .user.value.email!,
                                                   listDocsChats[index]

@@ -23,7 +23,6 @@ class ChatRoomController extends GetxController {
         "isRead": false,
       });
 
-      
       chatC.clear();
 
       await users
@@ -73,10 +72,10 @@ class ChatRoomController extends GetxController {
     }
   }
 
-  Stream<QuerySnapshot<Map<String, dynamic>>> streamChats(String chatId) {
+  Stream<QuerySnapshot<Map<String, dynamic>>> streamChats(String chat_id) {
     CollectionReference chats = firestore.collection("chats");
 
-    return chats.doc(chatId).collection("chat").orderBy("time").snapshots();
+    return chats.doc(chat_id).collection("chat").orderBy("time").snapshots();
   }
 
   Stream<DocumentSnapshot<Object?>> streamFriendData(String friendEmail) {
@@ -90,6 +89,4 @@ class ChatRoomController extends GetxController {
     chatC = TextEditingController();
     super.onInit();
   }
-
-
 }

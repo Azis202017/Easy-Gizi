@@ -12,7 +12,7 @@ import '../controllers/chat_room_controller.dart';
 
 class ChatRoomView extends GetView<ChatRoomController> {
   final authC = Get.find<AuthController>();
-  final String chatId = (Get.arguments as Map<String, dynamic>)["chat_id"];
+  final String chat_id = (Get.arguments as Map<String, dynamic>)["chat_id"];
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +150,7 @@ class ChatRoomView extends GetView<ChatRoomController> {
               width: double.infinity,
               height: 75,
               child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream: controller.streamChats(chatId),
+                stream: controller.streamChats(chat_id),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.active) {
                     var alldata = snapshot.data!.docs;
@@ -164,6 +164,7 @@ class ChatRoomView extends GetView<ChatRoomController> {
                               ? true
                               : false,
                           time: alldata[index]["time"],
+                          pick : '${authC.user.value.photoUrl}',
                         );
                       },
                     );
@@ -261,8 +262,10 @@ class ChatBubble extends StatelessWidget {
   final bool isSender;
   final String msg;
   final String time;
+  final String pick;
   const ChatBubble({
     Key? key,
+    required this.pick,
     required this.msg,
     required this.isSender,
     required this.time,
@@ -320,7 +323,7 @@ class ChatBubble extends StatelessWidget {
                   children: [
                     isSender
                         ? SizedBox()
-                        : Image.asset(
+                        : Image.network(
                             'assets/images/doctor_photo.png',
                             width: 55,
                             height: 55,
@@ -354,7 +357,7 @@ class ChatBubble extends StatelessWidget {
                         bottom: 17,
                       ),
                       child: Text(
-                        "Okay Doctor!, thanks.",
+                        msg,
                         style: reguler.copyWith(
                             fontSize: 14,
                             color: isSender ? whiteColor : blackColor2),
