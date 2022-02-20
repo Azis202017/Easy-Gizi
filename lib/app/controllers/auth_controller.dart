@@ -67,29 +67,6 @@ class AuthController extends GetxController {
         final currentUser = await users.doc(_currentUser!.email).get();
         final currentUserData = currentUser.data() as Map<String, dynamic>;
         user(UserModel.fromJson(currentUserData));
-        final listChats =
-            await users.doc(_currentUser!.email).collection("chats").get();
-
-        if (listChats.docs.length != 0) {
-          List<ChatUsers> dataListChats = List<ChatUsers>.empty();
-          listChats.docs.forEach((element) {
-            var dataDocChat = element.data();
-            var dataDocChatId = element.id;
-            dataListChats.add(ChatUsers(
-              chatId: dataDocChatId,
-              connection: dataDocChat["connection"],
-              lastTime: dataDocChat["lastTime"],
-              totalUnread: dataDocChat["total_unread"],
-            ));
-          });
-          user.update((user) {
-            user!.chats = dataListChats;
-          });
-        } else {
-          user.update((user) {
-            user!.chats = [];
-          });
-        }
         isAuth.value = true;
         Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
       } else {
