@@ -167,7 +167,9 @@ class HomeView extends GetView<HomeController> {
                     child: Row(
                       children: [
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed(Routes.PROFILE_DOCTOR);
+                          },
                           child: Column(
                             children: [
                               Container(

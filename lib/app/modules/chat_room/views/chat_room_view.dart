@@ -1,13 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
+import '../../../controllers/auth_controller.dart';
 import '../../../routes/app_pages.dart';
 import '../../../theme/color_app.dart';
 import '../../../theme/fonts_app.dart';
 import '../controllers/chat_room_controller.dart';
 
 class ChatRoomView extends GetView<ChatRoomController> {
+  final authC = Get.find<AuthController>();
+  final String chatId = (Get.arguments as Map<String, dynamic>)["chat_id"];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,45 +40,57 @@ class ChatRoomView extends GetView<ChatRoomController> {
                     height: 55,
                   ),
                 ),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      'Dr. Anastasya Salma',
-                      style: interSemiBold.copyWith(
-                        fontSize: 16,
-                        color: whiteColor,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/online_dot.png',
-                          width: 6,
-                          height: 6,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          'Online',
-                          style: reguler.copyWith(
-                            fontSize: 12,
-                            color: whiteColor,
+                title: StreamBuilder<DocumentSnapshot<Object?>>(
+                  stream: controller.streamFriendData(
+                      (Get.arguments as Map<String, dynamic>)["friendEmail"]),
+                  builder: (context, snapshotFriendUser) {
+                    if (snapshotFriendUser.connectionState ==
+                        ConnectionState.active) {
+                      var dataFriend = snapshotFriendUser.data!.data()
+                          as Map<String, dynamic>;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 20,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ],
+                          Text(
+                            dataFriend['name'],
+                            style: interSemiBold.copyWith(
+                              fontSize: 16,
+                              color: whiteColor,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/images/online_dot.png',
+                                width: 6,
+                                height: 6,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                'Online',
+                                style: reguler.copyWith(
+                                  fontSize: 12,
+                                  color: whiteColor,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    }
+                    return SizedBox();
+                  },
                 ),
                 trailing: GestureDetector(
                   onTap: () {
@@ -92,54 +110,68 @@ class ChatRoomView extends GetView<ChatRoomController> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: 30,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 34,
+            ),
+            width: Get.width,
+            height: 100,
+            decoration: BoxDecoration(
+              color: greyColorOpacity,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Consultation Start',
+                  style: interSemiBold.copyWith(
+                    color: primaryColor,
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  'You can consult your problem to the nutritionist',
+                  textAlign: TextAlign.center,
+                  style: reguler.copyWith(
+                    color: greyColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             child: Container(
               width: double.infinity,
               height: 75,
-              child: ListView(
-                children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: 30,
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 34,
-                    ),
-                    width: Get.width,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: greyColorOpacity,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Consultation Start',
-                          style: interSemiBold.copyWith(
-                            color: primaryColor,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          'You can consult your problem to the nutritionist',
-                          textAlign: TextAlign.center,
-                          style: reguler.copyWith(
-                            color: greyColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  ChatBubble(
-                    isSender: true,
-                  ),
-                  ChatBubble(
-                    isSender: false,
-                  ),
-                ],
+              child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                stream: controller.streamChats(chatId),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.active) {
+                    var alldata = snapshot.data!.docs;
+                    return ListView.builder(
+                      itemCount: alldata.length,
+                      itemBuilder: (context, index) {
+                        return ChatBubble(
+                          msg: "${alldata[index]["msg"]}",
+                          isSender: alldata[index]["pengirim"] ==
+                                  authC.user.value.email!
+                              ? true
+                              : false,
+                          time: alldata[index]["time"],
+                        );
+                      },
+                    );
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
               ),
             ),
           ),
@@ -152,6 +184,7 @@ class ChatRoomView extends GetView<ChatRoomController> {
                   child: Container(
                     margin: EdgeInsets.only(right: 10, left: 30),
                     child: TextField(
+                      controller: controller.chatC,
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       decoration: InputDecoration(
@@ -190,22 +223,29 @@ class ChatRoomView extends GetView<ChatRoomController> {
                     ),
                   ),
                 ),
-                Container(
-                  width: 55,
-                  height: 55,
-                  margin: EdgeInsets.only(
-                    right: 30,
+                GestureDetector(
+                  onTap: () => controller.newChat(
+                    authC.user.value.email!,
+                    Get.arguments as Map<String, dynamic>,
+                    controller.chatC.text,
                   ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 16,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: primaryColor,
-                  ),
-                  child: Image.asset(
-                    'assets/images/Send.png',
+                  child: Container(
+                    width: 55,
+                    height: 55,
+                    margin: EdgeInsets.only(
+                      right: 30,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 16,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: primaryColor,
+                    ),
+                    child: Image.asset(
+                      'assets/images/Send.png',
+                    ),
                   ),
                 ),
               ],
@@ -219,9 +259,13 @@ class ChatRoomView extends GetView<ChatRoomController> {
 
 class ChatBubble extends StatelessWidget {
   final bool isSender;
+  final String msg;
+  final String time;
   const ChatBubble({
     Key? key,
+    required this.msg,
     required this.isSender,
+    required this.time,
   }) : super(key: key);
 
   @override
@@ -266,7 +310,7 @@ class ChatBubble extends StatelessWidget {
                     bottom: 17,
                   ),
                   child: Text(
-                    "Okay Doctor!, thanks.",
+                    msg,
                     style: reguler.copyWith(
                         fontSize: 14,
                         color: isSender ? whiteColor : blackColor2),
@@ -322,7 +366,7 @@ class ChatBubble extends StatelessWidget {
             padding:
                 isSender ? EdgeInsets.zero : const EdgeInsets.only(left: 70.0),
             child: Text(
-              "18:22 PM",
+              DateFormat.jm().format(DateTime.parse(time)),
               style: reguler.copyWith(
                 fontSize: 14,
                 color: greyColor,

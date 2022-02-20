@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, avoid_function_literals_in_foreach_calls
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easygizi/app/data/models/user_model.dart';
 import 'package:easygizi/app/routes/app_pages.dart';
@@ -66,7 +68,53 @@ class AuthController extends GetxController {
         }
         final currentUser = await users.doc(_currentUser!.email).get();
         final currentUserData = currentUser.data() as Map<String, dynamic>;
-        user(UserModel.fromJson(currentUserData));
+        user(
+          UserModel(
+            name: currentUserData['name'],
+            email: currentUserData['email'],
+            photoUrl: currentUserData['photoUrl'],
+            status: currentUserData['status'],
+            creationTime: currentUserData['creationTime'],
+            lastSignInTime: currentUserData['lastSignInTime'],
+            updatedTime: currentUserData['updatedTime'],
+            patients: currentUserData['patients'],
+            about: currentUserData['about'],
+            age: currentUserData['age'],
+            experience: currentUserData['experience'],
+            gender: currentUserData['gender'],
+            height: currentUserData['height'],
+            rating: currentUserData['rating'],
+            role: currentUserData['role'],
+            uid: currentUserData['uid'],
+            weight: currentUserData['weight'],
+          ),
+        );
+        final listChats =
+            await users.doc(_currentUser!.email).collection("chats").get();
+
+        if (listChats.docs.isNotEmpty) {
+          List<ChatUsers> dataListChats = [];
+          listChats.docs.forEach((element) {
+            var dataDocChat = element.data();
+            var dataDocChatId = element.id;
+            dataListChats.add(ChatUsers(
+              chatId: dataDocChatId,
+              connection: dataDocChat["connection"],
+              lastTime: dataDocChat["lastTime"],
+              totalUnread: dataDocChat["total_unread"],
+            ));
+          });
+
+          user.update((user) {
+            user!.chats = dataListChats;
+          });
+        } else {
+          user.update((user) {
+            user!.chats = [];
+          });
+        }
+
+        user.refresh();
         isAuth.value = true;
         Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
       } else {
@@ -82,87 +130,170 @@ class AuthController extends GetxController {
     Get.offAllNamed(Routes.LOGIN_PAGE);
   }
 
-  void addNewConnection(
-    String email,
-  ) async {
+  void addNewConnection(String friendEmail) async {
     bool flagNewConnection = false;
+    var chatId;
     String date = DateTime.now().toIso8601String();
-    CollectionReference chats = firestore.collection('chats');
-    CollectionReference users = firestore.collection('users');
-    final docUser = await users.doc(_currentUser!.email).get();
-    final docChats = (docUser.data() as Map<String, dynamic>)['chats'] as List;
-    var chat_id;
-    if (docChats.isNotEmpty) {
-      docChats.forEach((singleChat) {
-        if (singleChat['connection'] == email) {
-          chat_id = singleChat['chat_id'];
-        }
-      });
-      if (chat_id == null) {
+    CollectionReference chats = firestore.collection("chats");
+    CollectionReference users = firestore.collection("users");
+
+    final docChats =
+        await users.doc(_currentUser!.email).collection("chats").get();
+
+    if (docChats.docs.isNotEmpty) {
+      // user sudah pernah chat dengan siapapun
+      final checkConnection = await users
+          .doc(_currentUser!.email)
+          .collection("chats")
+          .where("connection", isEqualTo: friendEmail)
+          .get();
+
+      if (checkConnection.docs.isNotEmpty) {
+        // sudah pernah buat koneksi dengan => friendEmail
         flagNewConnection = false;
+
+        //chatId from chats collection
+        chatId = checkConnection.docs[0].id;
       } else {
-        flagNewConnection = false;
+        // blm pernah buat koneksi dengan => friendEmail
+        // buat koneksi ....
+        flagNewConnection = true;
       }
     } else {
+      // blm pernah chat dengan siapapun
+      // buat koneksi ....
       flagNewConnection = true;
     }
+
     if (flagNewConnection) {
-      final chatDoc = await chats.where(
-        'connections',
+      // cek dari chats collection => connections => mereka berdua...
+      final chatsDocs = await chats.where(
+        "connections",
         whereIn: [
           [
             _currentUser!.email,
-            email,
+            friendEmail,
           ],
           [
-            email,
+            friendEmail,
             _currentUser!.email,
           ],
         ],
       ).get();
-      if (chatDoc.docs.isNotEmpty) {
-        // Terdapat data chats (sudah ada diantara mereka berdua)
-        final chatsDataId = chatDoc.docs[0].id;
 
-        final chatsData = chatDoc.docs[0].data() as Map<String, dynamic>;
-        docChats.add({
-          "connection": email,
-          "chat_id": chatsDataId,
+      if (chatsDocs.docs.isNotEmpty) {
+        // terdapat data chats (sudah ada koneksi antara mereka berdua)
+        final chatDataId = chatsDocs.docs[0].id;
+        final chatsData = chatsDocs.docs[0].data() as Map<String, dynamic>;
+
+        await users
+            .doc(_currentUser!.email)
+            .collection("chats")
+            .doc(chatDataId)
+            .set({
+          "connection": friendEmail,
           "lastTime": chatsData["lastTime"],
           "total_unread": 0,
         });
 
-        await users.doc(_currentUser!.email).update({"chats": docChats});
-        user.update((user) {
-          user!.chats = List<ChatUsers>.from(docChats);
-        });
-        chat_id = chatsDataId;
+        final listChats =
+            await users.doc(_currentUser!.email).collection("chats").get();
+
+        if (listChats.docs.isNotEmpty) {
+          List<ChatUsers> dataListChats = [];
+          listChats.docs.forEach((element) {
+            var dataDocChat = element.data();
+            var dataDocChatId = element.id;
+            dataListChats.add(ChatUsers(
+              chatId: dataDocChatId,
+              connection: dataDocChat["connection"],
+              lastTime: dataDocChat["lastTime"],
+              totalUnread: dataDocChat["total_unread"],
+            ));
+          });
+          user.update((user) {
+            user!.chats = dataListChats;
+          });
+        } else {
+          user.update((user) {
+            user!.chats = [];
+          });
+        }
+
+        chatId = chatDataId;
+
         user.refresh();
       } else {
-        final newChatDocument = await chats.add({
+        // buat baru , mereka berdua benar2 belum ada koneksi
+        final newChatDoc = await chats.add({
           "connections": [
             _currentUser!.email,
-            email,
+            friendEmail,
           ],
-          "chat": [],
         });
+        chats.doc(newChatDoc.id).collection("chat");
 
-        docChats.add({
-          "connection": email,
-          "chat_id": newChatDocument.id,
+        await users
+            .doc(_currentUser!.email)
+            .collection("chats")
+            .doc(newChatDoc.id)
+            .set({
+          "connection": friendEmail,
           "lastTime": date,
           "total_unread": 0,
         });
 
-        await users.doc(_currentUser!.email).update({"chats": docChats});
-        user.update((user) {
-          user!.chats = List<ChatUsers>.from(docChats);
+        final listChats =
+            await users.doc(_currentUser!.email).collection("chats").get();
+
+        if (listChats.docs.isNotEmpty) {
+          List<ChatUsers> dataListChats = [];
+          listChats.docs.forEach((element) {
+            var dataDocChat = element.data();
+            var dataDocChatId = element.id;
+            dataListChats.add(ChatUsers(
+              chatId: dataDocChatId,
+              connection: dataDocChat["connection"],
+              lastTime: dataDocChat["lastTime"],
+              totalUnread: dataDocChat["total_unread"],
+            ));
+          });
+          user.update((user) {
+            user!.chats = dataListChats;
+          });
+        } else {
+          user.update((user) {
+            user!.chats = [];
+          });
+        }
+
+        chatId = newChatDoc.id;
+        final updateStatusChat = await chats
+            .doc(chatId)
+            .collection("chat")
+            .where("isRead", isEqualTo: false)
+            .where("penerima", isEqualTo: _currentUser!.email)
+            .get();
+
+        updateStatusChat.docs.forEach((element) async {
+          await chats
+              .doc(chatId)
+              .collection("chat")
+              .doc(element.id)
+              .update({"isRead": true});
         });
+
+        await users
+            .doc(_currentUser!.email)
+            .collection("chats")
+            .doc(chatId)
+            .update({"total_unread": 0});
         user.refresh();
-        chat_id = newChatDocument.id;
       }
     }
-    print(chat_id);
-    Get.toNamed(Routes.CHAT_ROOM, arguments: chat_id);
+
+    print(chatId);
+
+    Get.toNamed(Routes.CHAT_ROOM, arguments: chatId);
   }
 }

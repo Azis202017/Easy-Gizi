@@ -34,6 +34,7 @@ class ChatSearchController extends GetxController {
         }
         if (queryAwal.isNotEmpty) {
           tempSearch.value = [];
+          // ignore: avoid_function_literals_in_foreach_calls
           queryAwal.forEach((element) {
             print(element['name'].startsWith(capitalize));
             if (element['name'].startsWith(capitalize)) {

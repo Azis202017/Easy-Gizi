@@ -118,22 +118,21 @@ class ChatView extends GetView<ChatController> {
                   ),
                   Container(
                     height: 500,
-                    child: StreamBuilder<
-                            DocumentSnapshot<Map<String, dynamic>>>(
+                    child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                         stream: controller
                             .chatsStream(authController.user.value.email!),
-                        builder: (context, snapshot) {
-                          var allChats = (snapshot.data!.data()
-                              as Map<String, dynamic>)["chats"] as List;
-                          if (snapshot.connectionState ==
+                        builder: (context, snapshot1) {
+                          if (snapshot1.connectionState ==
                               ConnectionState.active) {
+                            var listDocsChats = snapshot1.data!.docs;
+
                             return ListView.builder(
-                              itemCount: allChats.length,
+                              itemCount: listDocsChats.length,
                               itemBuilder: (context, index) {
                                 return StreamBuilder<
                                         DocumentSnapshot<Map<String, dynamic>>>(
                                     stream: controller.friendStream(
-                                        allChats[index]["connection"]),
+                                        listDocsChats[index]["connection"]),
                                     builder: (context, snapshot2) {
                                       if (snapshot2.connectionState ==
                                           ConnectionState.active) {
@@ -143,7 +142,13 @@ class ChatView extends GetView<ChatController> {
                                           children: [
                                             ListTile(
                                               onTap: () {
-                                                Get.toNamed(Routes.CHAT_ROOM);
+                                                controller.goToChatRoom(
+                                                  listDocsChats[index].id,
+                                                  authController
+                                                      .user.value.email!,
+                                                  listDocsChats[index]
+                                                      ["connection"],
+                                                );
                                               },
                                               contentPadding: EdgeInsets.zero,
                                               leading: Image.network(
@@ -164,7 +169,7 @@ class ChatView extends GetView<ChatController> {
                                                       backgroundColor:
                                                           primaryColor,
                                                       child: Text(
-                                                        '${allChats[index]["total_unread"]}',
+                                                        '${listDocsChats[index]["total_unread"]}',
                                                         style: interSemiBold
                                                             .copyWith(
                                                           color: Colors.white,
