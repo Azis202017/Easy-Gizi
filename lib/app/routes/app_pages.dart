@@ -85,11 +85,7 @@ class AppPages {
       page: () => ChatView(),
       binding: ChatBinding(),
     ),
-    GetPage(
-      name: _Paths.CHANGE_PROFILE,
-      page: () => ChangeProfileView(),
-      binding: ChangeProfileBinding(),
-    ),
+  
     GetPage(
       name: _Paths.CHAT_ROOM,
       page: () => ChatRoomView(),

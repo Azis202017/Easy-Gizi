@@ -164,7 +164,7 @@ class ChatRoomView extends GetView<ChatRoomController> {
                               ? true
                               : false,
                           time: alldata[index]["time"],
-                          pick : '${authC.user.value.photoUrl}',
+                       
                         );
                       },
                     );
@@ -262,10 +262,8 @@ class ChatBubble extends StatelessWidget {
   final bool isSender;
   final String msg;
   final String time;
-  final String pick;
   const ChatBubble({
     Key? key,
-    required this.pick,
     required this.msg,
     required this.isSender,
     required this.time,

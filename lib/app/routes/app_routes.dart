@@ -19,7 +19,6 @@ abstract class Routes {
   static const BMI_CALCULATOR = _Paths.BMI_CALCULATOR;
   static const EVENT = _Paths.EVENT;
   static const NUTRITION = _Paths.NUTRITION;
-  static const VIDEO_CALL = _Paths.VIDEO_CALL;
   static const CHAT_SEARCH = _Paths.CHAT_SEARCH;
 }
 
@@ -39,6 +38,5 @@ abstract class _Paths {
   static const BMI_CALCULATOR = '/bmi-calculator';
   static const EVENT = '/event';
   static const NUTRITION = '/nutrition';
-  static const VIDEO_CALL = '/video-call';
   static const CHAT_SEARCH = '/chat-search';
 }
